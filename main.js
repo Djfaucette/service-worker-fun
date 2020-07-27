@@ -31,6 +31,25 @@ const showFacts = facts => {
 
   container.appendChild(fragment);
 }
+// Get data from the cache.
+async function getCachedData(cacheName, url) {
+  const cacheStorage = await caches.open(cacheName);
+  console.log(cacheStorage);
+  const cachedResponse = await cacheStorage.match(url);
+  console.log(cachedResponse);
+
+  if (!cachedResponse || !cachedResponse.ok) {
+    return false;
+  }
+
+  return await cachedResponse.json();
+}
+
+// let cachedData = getCachedData("v1", 'https://cat-fact.herokuapp.com/facts')
+//   .then(getRandomFacts)
+//   .then(showFacts)
+//   .then(console.log("Data served from cache."))
+//   .catch(e => console.error(e))
 
 fetch("https://cat-fact.herokuapp.com/facts")
   .then(res => res.json())
@@ -79,10 +98,10 @@ class CatFact extends HTMLElement {
 window.customElements.define("cat-fact", CatFact);
 
 // register the service worker
-// window.addEventListener("load", () => {
-//   navigator.serviceWorker.register("/service-worker.js")
-//     .then(registration => {
-//       console.log("Service Worker registation was successful", registration);
-//     })
-//     .catch(error => console.log("Service Worker registration failed", error));
-// });
+window.addEventListener("load", () => {
+  navigator.serviceWorker.register("/service-worker.js")
+    .then(registration => {
+      console.log("Service Worker registation was successful", registration);
+    })
+    .catch(error => console.log("Service Worker registration failed", error));
+});
