@@ -1,5 +1,5 @@
 // add your service worker code here
-console.log("Hello, from your kind service worker (v1 the second).");
+console.log("Hello, from your kind service worker (v1 the third).");
 
 
 let assets = [
@@ -25,7 +25,7 @@ let assets = [
 self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open('v1').then(function (cache) {
-      console.log("Endpoints to be cached: ", apiUrl);
+      console.log("Endpoints to be cached: ", [...assets]);
       return cache.addAll([...assets]);
     })
   );
